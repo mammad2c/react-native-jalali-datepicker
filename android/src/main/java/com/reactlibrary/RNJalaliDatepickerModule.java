@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 
 
 public class RNJalaliDatepickerModule extends ReactContextBaseJavaModule {
@@ -30,6 +31,29 @@ public class RNJalaliDatepickerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show(String message, int duration) {
-        Toast.makeText(getReactApplicationContext(), message, duration).show();
+      picker = new PersianDatePickerDialog(this)
+              .setPositiveButtonString("باشه")
+              .setNegativeButton("بیخیال")
+              .setTodayButton("امروز")
+              .setTodayButtonVisible(true)
+              .setInitDate(initDate)
+              .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
+              .setMinYear(1300)
+              .setActionTextColor(Color.GRAY)
+              .setTypeFace(typeface)
+              .setListener(new Listener() {
+                @Override
+                public void onDateSelected(PersianCalendar persianCalendar) {
+                  Toast.makeText(context, persianCalendar.getPersianYear() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onDismissed() {
+
+                }
+              });
+
+      picker.show();
+
     }
 }
