@@ -10,13 +10,16 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.util.Date;
+
+import ir.hamsaa.persiandatepicker.Listener;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
+import ir.hamsaa.persiandatepicker.util.PersianCalendar;
 
 
 public class RNJalaliDatepickerModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
-
 
   public RNJalaliDatepickerModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -31,7 +34,9 @@ public class RNJalaliDatepickerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show(String message, int duration) {
-      picker = new PersianDatePickerDialog(this)
+        PersianCalendar initDate = new PersianCalendar();
+        initDate.setPersianDate(1370, 3, 13);
+        PersianDatePickerDialog  picker = new PersianDatePickerDialog(getReactApplicationContext())
               .setPositiveButtonString("باشه")
               .setNegativeButton("بیخیال")
               .setTodayButton("امروز")
@@ -40,11 +45,10 @@ public class RNJalaliDatepickerModule extends ReactContextBaseJavaModule {
               .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
               .setMinYear(1300)
               .setActionTextColor(Color.GRAY)
-              .setTypeFace(typeface)
               .setListener(new Listener() {
                 @Override
                 public void onDateSelected(PersianCalendar persianCalendar) {
-                  Toast.makeText(context, persianCalendar.getPersianYear() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay(), Toast.LENGTH_SHORT).show();
+                  Toast.makeText(getReactApplicationContext(), persianCalendar.getPersianYear() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
